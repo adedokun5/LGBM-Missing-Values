@@ -43,13 +43,16 @@ The methodology involved the following steps:
    The pred_df will be utilized for predicting the missing (NaN) values, with the predicted values being assigned to their corresponding indices in the new_df.
 
 1.9 Identify categorical and continuous columns.
+   ```python
    categorical_columns = new_df.select_dtypes(include=['object']).columns
    continuous_columns = new_df.select_dtypes(include=['int64', 'float64']).columns
+   ```
+
    Categorical columns: are of data type object, which typically refers to categorical variables (e.g., strings, labels).
    Continuous columns: are of numerical data types (int and float), which are typically used for continuous variables.
 
 1.10 Convert categorical columns into numeric representations
-   def convert_to_numeric( continuous_df, categorical_columns, categorical, pred_col ):
+   `def convert_to_numeric( continuous_df, categorical_columns, categorical, pred_col ):
       # Iterate through the list of categorical columns
       for column in categorical_columns:
          # Check if the column is the one to be predicted and is categorical
@@ -59,7 +62,7 @@ The methodology involved the following steps:
          # Convert the categorical column to numeric using pd.factorize
          continuous_df[ column ] = pd.factorize( continuous_df[ column ] )[ 0 ]
 
-      return continuous_df
+      return continuous_df`
    Parameters:
    continuous_df: The DataFrame containing both categorical and continuous columns.
    categorical_columns: A list of columns that are identified as categorical.
@@ -73,13 +76,13 @@ The methodology involved the following steps:
    Return the Modified DataFrame: The function returns the updated DataFrame with the categorical columns converted to numeric values.
 
 1.10 Model selection based on the type of prediction task
-   def set_model_type( categorical ):
+   `def set_model_type( categorical ):
       if categorical == True:
          # Predicting a categorical column
          return LGBMClassifier()
       else:
          # Predicting a continuous column
-         return LGBMRegressor() # Returns LGBMRegressor
+         return LGBMRegressor() # Returns LGBMRegressor`
 
    The function set_model_type is designed to choose an appropriate LightGBM model based on the data type (whether the target variable is categorical or continuous). 
    Parameters:
@@ -91,7 +94,7 @@ The methodology involved the following steps:
 
 1.11 Predict Missing Values
 
-   def predict_missing_values(pred_df, columns, new_df, categorical_data, categorical_columns ):
+   `def predict_missing_values(pred_df, columns, new_df, categorical_data, categorical_columns ):
       for col in columns:
 
          # If more than 50% of the column data is missing, drop the column
@@ -130,7 +133,7 @@ The methodology involved the following steps:
                y_pred = lgbm.predict(X_test)
 
                # Assign the predicted values to the missing entries in the original dataframe
-               new_df.loc[col_missing_index, col] = y_pred
+               new_df.loc[col_missing_index, col] = y_pred`
 
    The function predict_missing_values is designed to handle missing values in a dataset by predicting them using a machine learning model. This approach involves training a model on non-missing data and using the trained model to predict the missing values in the dataset.
    Function Parameters:
@@ -193,7 +196,9 @@ Upon executing the above code, the results can be verified by running the follow
    To confirm the integrity of the dataset after imputation, the dimensions of the new_df dataframe can be checked using the command new_df.shape. This will ensure that the number of rows and columns remain consistent after handling missing values.
 
 3.3 Get DataFrame Summary
+   ```python
    new_df.describe()
+   ```
 
    To examine the statistical summary of the dataset after imputation, the command new_df.describe() can be used. This will provide key summary statistics, including measures of central tendency and spread, for each numerical feature in the new_df dataframe, helping to evaluate the overall impact of the imputation process.
 
