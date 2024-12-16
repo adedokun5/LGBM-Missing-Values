@@ -233,8 +233,8 @@ Upon executing the above code, the results can be verified by running the follow
    To examine the statistical summary of the dataset after imputation, the command new_df.describe() can be used. This will provide key summary statistics, including measures of central tendency and spread, for each numerical feature in the new_df dataframe, helping to evaluate the overall impact of the imputation process.
 
 3.4 Check the number of missing (NaN) values in each column of the DataFrame
-   n```python
-   ew_df.isna().sum()
+   ```python
+   new_df.isna().sum()
    ```
 
    To verify the success of the imputation process, the command new_df.isna().sum() can be executed. This will provide the count of missing values for each feature, helping to confirm that all missing values have been imputed and that no NaN values remain in the dataset.
