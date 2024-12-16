@@ -7,38 +7,54 @@
 The methodology involved the following steps:
 
 1.1 Importing Necessary Libraries
+   ```python
    import pandas as pd
    import numpy as np
    import matplotlib.pyplot as plt
    import seaborn as sns
    from lightgbm import LGBMRegressor, LGBMClassifier
+   ```
 
 1.2 Read and Inspect Dataset 
+   ```python
    df = pd.read_csv('sample_data/kidney_disease.csv')
    df.head()
+   ```
 
 1.3 Display the dimensions of the DataFrame (used to quickly check the size of a dataset)
+   ```python
    df.shape
+   ```
 
 1.4 Get DataFrame Summary
+   ```python
    df.info()
+   ```
    provides a concise summary of the DataFrame df. It outputs key information about the structure and content of the dataset, which is helpful for understanding its characteristics before further analysis.
 
 1.5 Get descriptive statistics for the numerical columns in the DataFrame df
+   ```python
    df.describe()
+   ```
 
 1.6 Check the number of missing (NaN) values in each column of the DataFrame df
+   ```python
    df.isna().sum()
+   ```
    It returns the count of missing values for each column, helping to identify which features have incomplete data.
 
 1.7 Drop id column
+   ```python
    df.drop('id', axis=1, inplace=True)
+   ```
    The id column has been removed from the dataset as it does not contribute to the analysis for this experiment.
 
 1.8 Make copies of DataFrame
+   ```python
    new_df = df.copy()
    pred_df = df.copy()
    new_df.head()
+   ```
    The code new_df = df.copy() and pred_df = df.copy() creates two copies of the original DataFrame df. Both new_df and pred_df are independent of df, meaning that any changes made to new_df or pred_df will not affect the original DataFrame, and vice versa.
    The pred_df will be utilized for predicting the missing (NaN) values, with the predicted values being assigned to their corresponding indices in the new_df.
 
@@ -52,7 +68,8 @@ The methodology involved the following steps:
    Continuous columns: are of numerical data types (int and float), which are typically used for continuous variables.
 
 1.10 Convert categorical columns into numeric representations
-   `def convert_to_numeric( continuous_df, categorical_columns, categorical, pred_col ):
+   ```python
+   def convert_to_numeric( continuous_df, categorical_columns, categorical, pred_col ):
       # Iterate through the list of categorical columns
       for column in categorical_columns:
          # Check if the column is the one to be predicted and is categorical
@@ -62,7 +79,8 @@ The methodology involved the following steps:
          # Convert the categorical column to numeric using pd.factorize
          continuous_df[ column ] = pd.factorize( continuous_df[ column ] )[ 0 ]
 
-      return continuous_df`
+      return continuous_df
+   ```
    Parameters:
    continuous_df: The DataFrame containing both categorical and continuous columns.
    categorical_columns: A list of columns that are identified as categorical.
@@ -76,13 +94,15 @@ The methodology involved the following steps:
    Return the Modified DataFrame: The function returns the updated DataFrame with the categorical columns converted to numeric values.
 
 1.10 Model selection based on the type of prediction task
-   `def set_model_type( categorical ):
+   ```python
+   def set_model_type( categorical ):
       if categorical == True:
          # Predicting a categorical column
          return LGBMClassifier()
       else:
          # Predicting a continuous column
-         return LGBMRegressor() # Returns LGBMRegressor`
+         return LGBMRegressor() # Returns LGBMRegressor
+   ```
 
    The function set_model_type is designed to choose an appropriate LightGBM model based on the data type (whether the target variable is categorical or continuous). 
    Parameters:
@@ -94,7 +114,8 @@ The methodology involved the following steps:
 
 1.11 Predict Missing Values
 
-   `def predict_missing_values(pred_df, columns, new_df, categorical_data, categorical_columns ):
+   ```python
+   def predict_missing_values(pred_df, columns, new_df, categorical_data, categorical_columns ):
       for col in columns:
 
          # If more than 50% of the column data is missing, drop the column
@@ -133,7 +154,8 @@ The methodology involved the following steps:
                y_pred = lgbm.predict(X_test)
 
                # Assign the predicted values to the missing entries in the original dataframe
-               new_df.loc[col_missing_index, col] = y_pred`
+               new_df.loc[col_missing_index, col] = y_pred
+   ```
 
    The function predict_missing_values is designed to handle missing values in a dataset by predicting them using a machine learning model. This approach involves training a model on non-missing data and using the trained model to predict the missing values in the dataset.
    Function Parameters:
@@ -172,13 +194,17 @@ The methodology involved the following steps:
 
 1.12 Predict missing values for continuous features
 
+   ```python
    predict_missing_values( pred_df, continuous_columns, new_df, False, categorical_columns )
+   ```
 
    By running this code, the missing continuous values in pred_df are predicted and stored in new_df, ensuring that the imputed values are based on the patterns observed in the available data.
 
 1.13 Predict missing values for categorical features
 
+   ```python
    predict_missing_values( pred_df, categorical_columns, new_df, True, categorical_columns )
+   ```
 
    By running this code, the missing categorical values in pred_df are predicted and stored in new_df, ensuring that the imputed values are based on the patterns observed in the available data.
 
@@ -186,12 +212,16 @@ The methodology involved the following steps:
 Upon executing the above code, the results can be verified by running the following blocks of code
 
 2.1 Display first few rows
+   ```python
    new_df.head()
+   ```
 
    Display the first few rows of the new_df dataframe, allowing you to verify that the missing values in the dataset have been successfully imputed. This function helps to quickly inspect the changes made to the data, ensuring that the predicted values are correctly filled in the columns with missing entries.
 
 3.2 Display dimension of the DataFrame
+   ```python
    new_df.shape
+   ```
 
    To confirm the integrity of the dataset after imputation, the dimensions of the new_df dataframe can be checked using the command new_df.shape. This will ensure that the number of rows and columns remain consistent after handling missing values.
 
@@ -203,7 +233,9 @@ Upon executing the above code, the results can be verified by running the follow
    To examine the statistical summary of the dataset after imputation, the command new_df.describe() can be used. This will provide key summary statistics, including measures of central tendency and spread, for each numerical feature in the new_df dataframe, helping to evaluate the overall impact of the imputation process.
 
 3.4 Check the number of missing (NaN) values in each column of the DataFrame
-   new_df.isna().sum()
+   n```python
+   ew_df.isna().sum()
+   ```
 
    To verify the success of the imputation process, the command new_df.isna().sum() can be executed. This will provide the count of missing values for each feature, helping to confirm that all missing values have been imputed and that no NaN values remain in the dataset.
 
