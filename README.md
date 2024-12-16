@@ -240,5 +240,4 @@ Upon executing the above code, the results can be verified by running the follow
    To verify the success of the imputation process, the command new_df.isna().sum() can be executed. This will provide the count of missing values for each feature, helping to confirm that all missing values have been imputed and that no NaN values remain in the dataset.
 
 
-
-To gain a deeper understanding and enhance your reading experience, feel free to explore more in my Medium article. https://medium.com/@adedokunjuliusayobami/handling-missing-values-with-light-gbm-4a222d8af31b
+To gain a deeper understanding and enhance your reading experience, feel free to explore more in my Medium article by clicking [Here](https://medium.com/@adedokunjuliusayobami/handling-missing-values-with-light-gbm-4a222d8af31b)
